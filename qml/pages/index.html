@@ -1,0 +1,361 @@
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNQtxY6pNKZrjCJLeK_9TtsJbOJzObYm0&sensor=false">
+    </script>
+    <script type="text/javascript">
+	//////////////////////////////////////
+		var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    	// If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];
+    	// If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+    	// If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  } 
+    return query_string;
+} ();
+	
+	
+	
+
+
+
+	////////////////////////////////////////
+	
+	var latitPlace =QueryString.latit;
+	var longitPlace =QueryString.longit;
+	var stringDetails = QueryString.data;
+	
+	
+	
+      function initialize() {
+	  
+	  ///////////Gmap
+	  var mapOptions = {
+          center: new google.maps.LatLng(latitPlace, longitPlace),
+          zoom: 15
+        };
+		var map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+	  
+	  ///////////
+	  
+	  
+		//verylongddata///////////////////////////////////////
+        var stringDetailsArray = stringDetails.split("@");
+        //toShow = ""
+
+		
+        var atmString = stringDetailsArray[0];
+        var hospitalString = stringDetailsArray[1];
+        var restaurantString = stringDetailsArray[2];
+        var universityString = stringDetailsArray[3];
+        var busStopString = stringDetailsArray[4];
+        var municipalityString = stringDetailsArray[5];
+        var smarketString = stringDetailsArray[6];
+		
+		
+		
+		var markersParameters = [];
+
+		var help;
+		
+        //parsing busStop
+        //toShow+="Bus Stop\n"
+            //if not found anything: |score:5|distance:300
+        var busStopStringArray = busStopString.split("$");
+		
+        for (var i=1;i<busStopStringArray.length;i++)
+        {
+		
+            //single element: lat:63|lon:53
+            //last element will be like:lat:63|lon:53|score:1|distance:2000
+			
+            //var latlongArray = busStopStringArray[i].split("|");
+            var latlongArray = busStopStringArray[i].split("%7C");
+			var latit  = latlongArray[0].split(":")[1];
+			var longit = latlongArray[1].split(":")[1];
+			
+			//create markers
+			markersParameters.push( 
+				new google.maps.Marker({
+					position: new google.maps.LatLng(latit, longit),
+					map: map,
+					title: 'Bus Stop',
+					icon: 'images/bus.png'
+			}));
+			///////////
+			
+			
+			
+            //toShow+=i+". Lat:"+latit+" Long:"+longit+"\n";
+            //if (i==busStopStringArray.length-1){
+               // toShow+=latlongArray[2]+" "+latlongArray[3];
+            //}
+         }
+		 
+		 
+		 //parsing atm
+            //if not found anything: |score:5|distance:300
+        var atmStringArray = atmString.split("$");
+		
+        for (var i=1;i<atmStringArray.length;i++)
+        {
+		
+            //single element: lat:63|lon:53
+            //last element will be like:lat:63|lon:53|score:1|distance:2000
+			
+            //var latlongArray = busStopStringArray[i].split("|");
+            var latlongArray = atmStringArray[i].split("%7C");
+			var latit  = latlongArray[0].split(":")[1];
+			var longit = latlongArray[1].split(":")[1];
+			
+			//create markers
+			markersParameters.push( 
+				new google.maps.Marker({
+					position: new google.maps.LatLng(latit, longit),
+					map: map,
+					title: 'ATM',
+					icon: 'images/atm.png'
+			}));
+			///////////
+			
+			
+			
+            //toShow+=i+". Lat:"+latit+" Long:"+longit+"\n";
+            //if (i==busStopStringArray.length-1){
+               // toShow+=latlongArray[2]+" "+latlongArray[3];
+            //}
+         }
+		
+		 
+		 //parsing supermarket
+            //if not found anything: |score:5|distance:300
+        var smarketStringArray = smarketString.split("$");
+		
+        for (var i=1;i<smarketStringArray.length;i++)
+        {
+		
+            //single element: lat:63|lon:53
+            //last element will be like:lat:63|lon:53|score:1|distance:2000
+			
+            //var latlongArray = busStopStringArray[i].split("|");
+            var latlongArray = smarketStringArray[i].split("%7C");
+			var latit  = latlongArray[0].split(":")[1];
+			var longit = latlongArray[1].split(":")[1];
+			
+			//create markers
+			markersParameters.push( 
+				new google.maps.Marker({
+					position: new google.maps.LatLng(latit, longit),
+					map: map,
+					title: 'Supermarket',
+					icon: 'images/grocery.png'
+			}));
+			///////////
+			
+			
+			
+            //toShow+=i+". Lat:"+latit+" Long:"+longit+"\n";
+            //if (i==busStopStringArray.length-1){
+               // toShow+=latlongArray[2]+" "+latlongArray[3];
+            //}
+         }
+		 
+		 //parsing hospital
+            //if not found anything: |score:5|distance:300
+        var hospitalStringArray = hospitalString.split("$");
+		
+        for (var i=1;i<hospitalStringArray.length;i++)
+        {
+		
+            //single element: lat:63|lon:53
+            //last element will be like:lat:63|lon:53|score:1|distance:2000
+			
+            //var latlongArray = busStopStringArray[i].split("|");
+            var latlongArray = hospitalStringArray[i].split("%7C");
+			var latit  = latlongArray[0].split(":")[1];
+			var longit = latlongArray[1].split(":")[1];
+			
+			//create markers
+			markersParameters.push( 
+				new google.maps.Marker({
+					position: new google.maps.LatLng(latit, longit),
+					map: map,
+					title: 'Hospital',
+					icon: 'images/hospital.png'
+			}));
+			///////////
+			
+			
+			
+            //toShow+=i+". Lat:"+latit+" Long:"+longit+"\n";
+            //if (i==busStopStringArray.length-1){
+               // toShow+=latlongArray[2]+" "+latlongArray[3];
+            //}
+         }
+
+		 
+		 //parsing restaurant
+            //if not found anything: |score:5|distance:300
+        var restaurantStringArray = restaurantString.split("$");
+		
+        for (var i=1;i<restaurantStringArray.length;i++)
+        {
+		
+            //single element: lat:63|lon:53
+            //last element will be like:lat:63|lon:53|score:1|distance:2000
+			
+            //var latlongArray = busStopStringArray[i].split("|");
+            var latlongArray = restaurantStringArray[i].split("%7C");
+			var latit  = latlongArray[0].split(":")[1];
+			var longit = latlongArray[1].split(":")[1];
+			
+			//create markers
+			markersParameters.push( 
+				new google.maps.Marker({
+					position: new google.maps.LatLng(latit, longit),
+					map: map,
+					title: 'Restaurant',
+					icon: 'images/restaurant.png'
+			}));
+			///////////
+			
+			
+			
+            //toShow+=i+". Lat:"+latit+" Long:"+longit+"\n";
+            //if (i==busStopStringArray.length-1){
+               // toShow+=latlongArray[2]+" "+latlongArray[3];
+            //}
+         }
+
+		//parsing city center
+            //if not found anything: |score:5|distance:300
+        var municipalityStringArray = municipalityString.split("$");
+		
+        for (var i=1;i<municipalityStringArray.length;i++)
+        {
+		
+            //single element: lat:63|lon:53
+            //last element will be like:lat:63|lon:53|score:1|distance:2000
+			
+            //var latlongArray = busStopStringArray[i].split("|");
+            var latlongArray = municipalityStringArray[i].split("%7C");
+			var latit  = latlongArray[0].split(":")[1];
+			var longit = latlongArray[1].split(":")[1];
+			
+			//create markers
+			markersParameters.push( 
+				new google.maps.Marker({
+					position: new google.maps.LatLng(latit, longit),
+					map: map,
+					title: 'City Center',
+					icon: 'images/Store.png'
+			}));
+			///////////
+			
+			
+			
+            //toShow+=i+". Lat:"+latit+" Long:"+longit+"\n";
+            //if (i==busStopStringArray.length-1){
+               // toShow+=latlongArray[2]+" "+latlongArray[3];
+            //}
+         }
+
+		//parsing university
+            //if not found anything: |score:5|distance:300
+        var universityStringArray = universityString.split("$");
+		
+        for (var i=1;i<universityStringArray.length;i++)
+        {
+		
+            //single element: lat:63|lon:53
+            //last element will be like:lat:63|lon:53|score:1|distance:2000
+			
+            //var latlongArray = busStopStringArray[i].split("|");
+            var latlongArray = universityStringArray[i].split("%7C");
+			var latit  = latlongArray[0].split(":")[1];
+			var longit = latlongArray[1].split(":")[1];
+			
+			//create markers
+			markersParameters.push( 
+				new google.maps.Marker({
+					position: new google.maps.LatLng(latit, longit),
+					map: map,
+					title: 'University',
+					icon: 'images/university.png'
+			}));
+			///////////
+			
+			
+			
+            //toShow+=i+". Lat:"+latit+" Long:"+longit+"\n";
+            //if (i==busStopStringArray.length-1){
+               // toShow+=latlongArray[2]+" "+latlongArray[3];
+            //}
+         }
+
+
+		 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	  
+		
+        
+			
+		 var marker = new google.maps.Marker({
+			position: new google.maps.LatLng(latitPlace, longitPlace),
+			map: map,
+			title: 'Hello World!'
+		});
+		
+		var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h3 id="firstHeading" class="firstHeading">Your Location</h3>'+
+      '<div id="bodyContent">'+
+      '<p></p>'+
+      '</div>'+
+      '</div>';
+
+		
+		/////
+		var infowindow = new google.maps.InfoWindow({
+      content: contentString
+		});
+  
+  infowindow.open(map,marker);
+
+  
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.open(map,marker);
+  });
+		///
+	
+	
+			
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"/>
+  </body>
+</html>

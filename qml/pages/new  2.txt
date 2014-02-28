@@ -1,0 +1,6 @@
+1.lat,long
+2.atm:lat,long
+
+
+string: #lat:63|lon:53 #lat:63|lon:53 #lat:63|lon:53|score:1|distance:2000@#lat:63|lon:53 #lat:63|lon:53 #lat:63|lon:53|score:1|distance:2000
+(atmResult+"@"+hospitalResult+"@"+restaurantResult+"@"+universityResult+"@"+busStopResult+"@"+municipalityResult+"@"+smarketResult);
